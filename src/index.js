@@ -56,7 +56,7 @@ const handleLoadMoreBtnClick = async () => {
     const { data } = await pixabayAPI.fetchPhotos();
 
     const totalPages = data.totalHits / pixabayAPI.perPage;
-    if (pixabayAPI.currentPage === Math.round(totalPages)) {
+    if (pixabayAPI.currentPage > Math.round(totalPages)) {
       Notiflix.Notify.warning(
         `We're sorry, but you've reached the end of search results.`
       );
