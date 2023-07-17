@@ -61,7 +61,7 @@ const handleLoadMoreBtnClick = async () => {
     const { data } = await pixabayAPI.fetchPhotos();
 
     const totalPages = data.totalHits / pixabayAPI.perPage;
-    if (pixabayAPI.currentPage > Math.round(totalPages + 1)) {
+    if (pixabayAPI.currentPage >= Math.round(totalPages + 1)) {
       Notiflix.Notify.warning(
         `We're sorry, but you've reached the end of search results.`
       );
@@ -79,7 +79,7 @@ const handleLoadMoreBtnClick = async () => {
 
 // clear
 
-// clearGallery();
+clearGallery();
 
 // Eventlisteners and functions
 
