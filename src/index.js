@@ -59,19 +59,21 @@ const handleLoadMoreBtnClick = async () => {
 
   try {
     const { data } = await pixabayAPI.fetchPhotos();
-
-    const totalPages = data.totalHits / pixabayAPI.perPage;
-    if (pixabayAPI.currentPage >= Math.round(totalPages + 1)) {
-      Notiflix.Notify.warning(
-        `We're sorry, but you've reached the end of search results.`
-      );
-      loadMoreBtnEl.classList.add('is-hidden');
-      return;
-    }
+    const loadPages = Math.ceil(data.totalHits / pixabayAPI.perPage);
+    console.log(loadPages);
 
     galleryEl.insertAdjacentHTML('beforeend', createGalleryCards(data.hits));
 
     lightbox.refresh();
+
+    if (galleryEl.children.length === data.totalHits) {
+      loadMoreBtnEl.classList.add('is-hidden');
+      Notiflix.Notify.warning(
+        `We're sorry, but you've reached the end of search results.`
+      );
+
+      return;
+    }
   } catch (err) {
     console.log(err.message);
   }
