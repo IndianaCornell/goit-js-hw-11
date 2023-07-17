@@ -23,7 +23,7 @@ const handleSearchForm = async event => {
   event.preventDefault();
 
   const searchQuery = event.currentTarget.elements['searchQuery'].value.trim();
-
+  pixabayAPI.currentPage = 1;
   if (!searchQuery) {
     Notiflix.Notify.failure('Please, type something and try again');
     return;
@@ -40,6 +40,7 @@ const handleSearchForm = async event => {
       throw new Error();
     }
     searchFormEl.reset();
+
     galleryEl.innerHTML = createGalleryCards(data.hits);
     lightbox.refresh();
     loadMoreBtnEl.classList.remove('is-hidden');
@@ -48,6 +49,8 @@ const handleSearchForm = async event => {
     console.log(err.message);
   }
 };
+
+// load more
 
 const handleLoadMoreBtnClick = async () => {
   pixabayAPI.currentPage += 1;
@@ -65,6 +68,7 @@ const handleLoadMoreBtnClick = async () => {
     }
 
     galleryEl.insertAdjacentHTML('beforeend', createGalleryCards(data.hits));
+
     lightbox.refresh();
   } catch (err) {
     console.log(err.message);
@@ -73,7 +77,7 @@ const handleLoadMoreBtnClick = async () => {
 
 // clear
 
-clearGallery();
+// clearGallery();
 
 // Eventlisteners and functions
 
