@@ -23,27 +23,29 @@ const handleSearchForm = async event => {
   event.preventDefault();
 
   const searchQuery = event.currentTarget.elements['searchQuery'].value.trim();
+  pixabayAPI.query = searchQuery;
   pixabayAPI.currentPage = 1;
+
   if (!searchQuery) {
     Notiflix.Notify.failure('Please, type something and try again');
     return;
   }
 
-  pixabayAPI.query = searchQuery;
-
   try {
     const { data } = await pixabayAPI.fetchPhotos();
+
     if (!data.hits.length) {
       Notiflix.Notify.failure(
         'Sorry, there are no images matching your search query. Please try again.'
       );
       throw new Error();
     }
+
     searchFormEl.reset();
 
     galleryEl.innerHTML = createGalleryCards(data.hits);
-    lightbox.refresh();
     loadMoreBtnEl.classList.remove('is-hidden');
+    lightbox.refresh();
     Notiflix.Notify.success(`Hooray! We found ${data.totalHits} images.`);
   } catch (err) {
     console.log(err.message);
@@ -59,7 +61,7 @@ const handleLoadMoreBtnClick = async () => {
     const { data } = await pixabayAPI.fetchPhotos();
 
     const totalPages = data.totalHits / pixabayAPI.perPage;
-    if (pixabayAPI.currentPage > Math.round(totalPages)) {
+    if (pixabayAPI.currentPage > Math.round(totalPages + 1)) {
       Notiflix.Notify.warning(
         `We're sorry, but you've reached the end of search results.`
       );
