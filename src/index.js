@@ -47,6 +47,15 @@ const handleSearchForm = async event => {
     loadMoreBtnEl.classList.remove('is-hidden');
     lightbox.refresh();
     Notiflix.Notify.success(`Hooray! We found ${data.totalHits} images.`);
+
+    if (galleryEl.children.length === data.totalHits) {
+      loadMoreBtnEl.classList.add('is-hidden');
+      Notiflix.Notify.warning(
+        `We're sorry, but you've reached the end of search results.`
+      );
+
+      return;
+    }
   } catch (err) {
     console.log(err.message);
   }
